@@ -1,0 +1,245 @@
+body {
+  font-family: Arial, sans-serif;
+  user-select: none;
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#omrSheet{
+  transform: scale(0);
+  margin-top: 50px;
+  transition: 0.8s;
+}
+.exam-start{
+  transform: scale(1) !important;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+label {
+  margin-right: 10px;
+}
+
+timer {
+  width: fit-content;
+  height: 2em;
+  position: fixed;
+  display: flex;
+  font-size: 1.5em;
+  opacity: 0.7;
+  flex: 1 1 0%;
+  z-index: 1;
+  top: 0px;
+  left: calc(100% - 50px);
+  align-items: center;
+  transform: translateX(-100%);
+  transition: 0.8s;
+}
+.before-start{
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+timer > *{
+  margin: 5px;
+}
+
+start > i{
+  font-size: 1.5em;
+  color: #0084ff;
+}
+
+
+input[type="button"]{
+  border: 1px solid #c8c8c8;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  height: 39px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+#savenext{
+  background-color: #0c7cd5;
+  border-color: 1px solid #333;
+  color: #ffffff;
+  margin-left: 5px;
+  line-height: 33px;
+  float: right;
+}
+#savenext:hover{
+  border: 1px solid #333;
+}
+
+
+#clearResponse{
+  outline: none;
+}
+
+#clearResponse:hover{
+  background-color: #0c7cd5;
+  border: 1px solid #333;
+  color: #ffffff;
+}
+
+.calculator-icon-container{
+  width: 100vw;
+  background: grey;
+  height: fit-content;
+}
+
+header {
+  position: fixed;
+  display: flex;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  background: #f2f2f2;
+  height: 50px;
+  flex-direction: row-reverse;
+  z-index: 5;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calc-icon {
+  background: url(https://www.digialm.com//OnlineAssessment/images/Icon-sprite.png) no-repeat -209px -125px;
+  background-size: 40em;
+  display: block;
+  height: 44px;
+  width: 33px;
+  cursor: pointer;
+}
+
+header > div > span{
+  margin-left: 20px;
+  font-size: 1.2em;
+}
+
+header > div > numb {
+  pointer-events: auto;
+  width: 50px;
+  height: 43px;
+  background: url(https://www.digialm.com//OnlineAssessment/images/questions-sprite.png) no-repeat;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.417em;
+  font-weight: normal;
+  line-height: 42px;
+  margin: 10px 2px;
+  text-align: center;
+}
+
+.answered{
+  background-position: -4px -5px;
+}
+
+.not_answered{
+  background-position: -57px -127px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. Basic Table Styling for layout */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+  }
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+
+  /* 2. Container for the radio buttons to keep them in a row */
+  .options-container {
+    display: flex;
+    gap: 15px; /* Space between A, B, C, D */
+  }
+
+  /* 3. The Label Wrapper: Pointer cursor for better UX */
+  .custom-option {
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  /* 4. Hide the actual default radio button */
+  .custom-option input[type="radio"] {
+    display: none;
+  }
+
+  /* 5. Style the span to look like a circle with the letter inside */
+  .circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;       /* Size of the circle */
+    height: 30px;
+    border-radius: 50%; /* Makes it a circle */
+    border: 1px solid #aaa; /* Grey border */
+    background-color: white;
+    color: #888;       /* Grey text color */
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    user-select: none; /* Prevents highlighting text */
+  }
+
+  /* 6. Hover effect (optional, adds polish) */
+  .custom-option:hover .circle {
+    border-color: #4285F4;
+    color: #4285F4;
+  }
+
+  /* 7. CHECKED STATE: When the hidden radio is checked, style the sibling circle */
+  .custom-option input[type="radio"]:checked + .circle {
+    background-color: #4285F4; /* Blue background */
+    border-color: #4285F4;
+    color: transparent; /* Makes the letter 'invisible' as requested */
+  }
