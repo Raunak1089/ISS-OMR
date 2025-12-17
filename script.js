@@ -14,12 +14,97 @@ document.body.onclick = () => {
     document.querySelectorAll('numb')[1].innerText = 80 - answered;
 }
 
+// Global timer variables
+let timer_interval;
+let timer_paused = false;
+let timer_duration = 7200;
+
+// Question tracking variables
+let opened_qn = 1;
+let time_per_qn = new Array(80).fill(0);
+let last_qn_change_time = null;
+
+function updateOpenedQuestion(new_qn) {
+    if (new_qn < 1 || new_qn > 80) return;
+
+    // Record time spent on previous question
+    if (last_qn_change_time !== null && timer_interval) {
+        const current_time = Date.now();
+        const time_spent = current_time - last_qn_change_time;
+        time_per_qn[opened_qn - 1] += time_spent;
+    }
+
+    // Update opened_qn
+    const old_qn = opened_qn;
+    opened_qn = new_qn;
+    last_qn_change_time = Date.now();
+
+    // Update row highlighting
+    updateRowHighlighting(old_qn, opened_qn);
+}
+
+function updateRowHighlighting(old_qn, new_qn) {
+    // Remove highlight from old row
+    const old_row = document.querySelector(`tr[data-qn="${old_qn}"]`);
+    if (old_row) {
+        old_row.style.backgroundColor = '';
+        // Reset first td text color
+        const old_first_td = old_row.querySelector('td:first-child');
+        if (old_first_td) {
+            old_first_td.style.color = '';
+        }
+    }
+
+    // Add highlight to new row
+    const new_row = document.querySelector(`tr[data-qn="${new_qn}"]`);
+    if (new_row) {
+        new_row.style.backgroundColor = '#0c7cd5';
+        // Make first td text white
+        const new_first_td = new_row.querySelector('td:first-child');
+        if (new_first_td) {
+            new_first_td.style.color = 'white';
+        }
+    }
+}
+
+function formatTime(milliseconds) {
+    const total_seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(total_seconds / 60);
+    const seconds = total_seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function handleAnswerChange(questionNumber) {
+    // Move to next question when an answer is selected
+    if (questionNumber < 80) {
+        updateOpenedQuestion(questionNumber + 1);
+    }
+    // If it's question 80, stay on 80
+}
+
+function handleRowClick(event, questionNumber) {
+    // Don't change question if clicking on radio buttons or clear button
+    if (event.target.type === 'radio' || event.target.type === 'button') {
+        return;
+    }
+
+    // Change to clicked question
+    updateOpenedQuestion(questionNumber);
+}
+
 function resetOption(i) {
     document.querySelector(`[name="question${i}"]:checked`).checked = false;
 }
 
 function completed() {
     clearInterval(timer_interval);
+
+    // Record final time for current question
+    if (last_qn_change_time !== null) {
+        const current_time = Date.now();
+        const time_spent = current_time - last_qn_change_time;
+        time_per_qn[opened_qn - 1] += time_spent;
+    }
 
     // Collect all answers BEFORE document.write() erases the form
     let userAnswers = [];
@@ -81,6 +166,7 @@ function completed() {
         <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Your answer</th>
         <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Correct answer</th>
         <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Score</th>
+        <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Time taken</th>
       </tr>
     </thead>
     <tbody>
@@ -88,12 +174,25 @@ function completed() {
 
     for (let i = 1; i <= 80; i++) {
         const yourAnswer = userAnswers[i - 1];
+        const timeTaken = formatTime(time_per_qn[i - 1]);
+        const timeInSeconds = Math.floor(time_per_qn[i - 1] / 1000);
+
+        // Determine color for time taken
+        let timeColor = '';
+        if (timeInSeconds > 0 && timeInSeconds <= 90) {
+            timeColor = 'color: green;';
+        } else if (timeInSeconds > 90) {
+            timeColor = 'color: red;';
+        }
+        // timeInSeconds = 0 keeps default black color
+
         resultsHTML += `
       <tr>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${i}</td>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${yourAnswer}</td>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: center;" id="correct-${i}">${correctAnswers[i - 1]}</td>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: center;" id="score-${i}">-</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: center; ${timeColor}">${timeTaken}</td>
       </tr>
     `;
     }
@@ -238,7 +337,6 @@ function answer(i) {
 
 //TIMER ________________
 
-
 function getTime(seconds) {
     hr = Math.floor((seconds) / 3600).toString();
     min = Math.floor(((seconds) % 3600) / 60).toString();
@@ -249,11 +347,48 @@ function getTime(seconds) {
     return `${hr}:${min}:${sec}`;
 }
 
+function toggleTimer() {
+    if (timer_paused) {
+        // Resume timer
+        timer_paused = false;
+        document.querySelector('timer showtime').style.color = '';
+        last_qn_change_time = Date.now(); // Reset time tracking on resume
+        timer_interval = setInterval(() => {
+            document.querySelector('timer showtime').innerText = getTime(timer_duration);
+            if (timer_duration == 0) completed();
+            timer_duration--;
+        }, 1000);
+    } else {
+        // Pause timer - record time spent before pausing
+        if (last_qn_change_time !== null) {
+            const current_time = Date.now();
+            const time_spent = current_time - last_qn_change_time;
+            time_per_qn[opened_qn - 1] += time_spent;
+        }
 
+        timer_paused = true;
+        clearInterval(timer_interval);
+        document.querySelector('timer showtime').style.color = 'red';
+    }
+}
+
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'p' && timer_interval) {
+        event.preventDefault();
+        toggleTimer();
+    }
+});
 
 document.querySelector('timer start').onclick = () => {
     document.querySelector('timer start').hidden = true;
-    let duration = 7200;
+    timer_duration = 7200;
+    timer_paused = false;
+
+    // Initialize question tracking
+    opened_qn = 1;
+    time_per_qn = new Array(80).fill(0);
+    last_qn_change_time = Date.now();
+    updateRowHighlighting(0, 1); // Highlight first question
 
     document.body.style.overflow = "auto";
     window.scrollTo(0, 0);
@@ -261,9 +396,9 @@ document.querySelector('timer start').onclick = () => {
     document.querySelector('timer').classList.remove('before-start');
 
     timer_interval = setInterval(() => {
-        document.querySelector('timer showtime').innerText = getTime(duration);
-        if (duration == 0) completed();
-        duration--;
+        document.querySelector('timer showtime').innerText = getTime(timer_duration);
+        if (timer_duration == 0) completed();
+        timer_duration--;
     }, 1000)
 }
 
