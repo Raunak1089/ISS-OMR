@@ -117,41 +117,34 @@ function completed() {
 
     let correctAnswers = new Array(80).fill('');
 
+    // Dynamically generate the keys table based on anskeys
+    let availableYears = Object.keys(anskeys).sort((a, b) => a - b);
+    let tableHeaders = `<th style="padding: 4px; font-size: 0.5em;"></th>`;
+    let tableRowPI = `<th style="padding: 4px; font-size: 0.8em;">P I</th>`;
+    let tableRowPII = `<th style="padding: 4px; font-size: 0.8em;">P II</th>`;
+
+    availableYears.forEach(year => {
+        tableHeaders += `<th style="padding: 4px; font-size: 0.5em;">${year}</th>`;
+        tableRowPI += `<td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '${year}')"></td>`;
+        tableRowPII += `<td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '${year}')"></td>`;
+    });
+
     let resultsHTML = `
       <script src="https://raunak1089.github.io/all_scripts/fontawesome.js"></script>
 
 <div style="padding: 20px; font-family: Arial, sans-serif;">
   <h2 style="text-align: center; margin-bottom: 20px;">Exam Results</h2>
   
-  <!-- Answer Key Selection Table -->
   <div style="text-align: center; margin-bottom: 20px;">
     <table id="answerKeyTable" style="border-collapse: collapse; margin: 0 auto; display: inline-block;">
       <tr>
-        <th style="padding: 4px; font-size: 0.5em;"></th>
-        <th style="padding: 4px; font-size: 0.5em;">2017</th>
-        <th style="padding: 4px; font-size: 0.5em;">2018</th>
-        <th style="padding: 4px; font-size: 0.5em;">2019</th>
-        <th style="padding: 4px; font-size: 0.5em;">2020</th>
-        <th style="padding: 4px; font-size: 0.5em;">2021</th>
-        <th style="padding: 4px; font-size: 0.5em;">2022</th>
+        ${tableHeaders}
       </tr>
       <tr>
-        <th style="padding: 4px; font-size: 0.8em;">P I</th>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2017')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2018')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2019')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2020')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2021')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2022')"></td>
+        ${tableRowPI}
       </tr>
       <tr>
-        <th style="padding: 4px; font-size: 0.8em;">P II</th>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2017')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2018')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2019')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2020')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2021')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2022')"></td>
+        ${tableRowPII}
       </tr>
     </table>
   </div>
@@ -224,7 +217,7 @@ function completed() {
         const table = document.getElementById('answerKeyTable');
         const rows = table.rows;
         const rowIndex = paper === 'Paper I' ? 1 : 2; // Row 1 for Paper I, Row 2 for Paper II
-        const colIndex = ['2017', '2018', '2019', '2020', '2021', '2022'].indexOf(year) + 1; // +1 because first column is row header
+        const colIndex = Object.keys(anskeys).sort((a, b) => a - b).indexOf(year) + 1; // +1 because first column is row header
 
         if (rowIndex >= 1 && colIndex >= 1) {
             rows[rowIndex].cells[colIndex].style.backgroundColor = '#4285F4';
@@ -442,6 +435,12 @@ document.querySelector('#mainContentArea').onclick = () => { document.querySelec
 
 
 let anskeys = {
+    "2025": ["A,A,B,D,A,A,B,A,C,C,B,D,B,D,C,D,B,A,A,B,A,D,A,B,C,A,B,B,C,C,D,B,D,C,C,D,B,C,A,D,B,B,D,B,B,C,D,B,B,D,C,A,C,C,B,B,B,D,A,D,D,A,C,B,B,A,A,B,A,C,D,D,D,D,D,C,A,C,D,B", "D,B,A,C,C,A,C,D,A,D,A,C,A,B,A,B,C,A,D,A,A,C,B,C,D,D,D,C,D,B,D,D,B,C,A,C,B,B,B,B,B,C,A,D,C,C,B,C,B,B,A,C,C,C,C,D,B,B,C,C,C,D,A,B,B,B,D,C,C,D,B,D,B,B,D,C,B,A,B,A"],
+
+    "2024": ["A,C,A,A,D,C,B,C,A,B,C,B,B,C,B,C,B,A,B,D,D,B,A,B,C,C,B,B,A,B,B,D,B,B,A,D,B,D,C,B,D,D,D,C,A,A,A,B,D,D,D,A,B,A,X,A,D,A,D,C,B,D,C,D,A,B,D,B,D,A,A,B,B,B,B,X,A,B,C,B", "B,A,C,B,C,C,C,C,A,A,A,D,A,C,C,D,A,C,D,B,C,C,D,D,C,D,C,C,A,A,D,D,A,A,C,C,B,B,D,B,C,B,C,D,A,B,A,A,A,B,C,A,C,D,C,C,C,C,A,B,C,D,D,C,D,A,D,D,C,C,B,B,B,A,D,A,A,B,A,A"],
+
+    "2023": ["D,A,A,C,D,D,D,D,D,A,A,D,C,B,A,C,C,B,A,D,C,A,D,D,A,D,C,A,A,A,B,D,A,A,B,A,B,A,A,C,C,B,D,B,D,B,C,B,D,C,B,A,A,D,D,C,D,C,B,A,A,B,B,X,B,C,C,C,C,A,D,B,B,B,A,A,C,C,D,D", "C,D,C,C,A,A,A,B,D,D,C,B,D,C,D,B,D,B,B,A,D,A,B,C,A,D,C,D,D,C,B,C,A,X,B,A,C,D,A,B,C,C,D,C,A,B,B,C,A,C,A,C,C,C,B,C,D,D,B,A,D,A,C,C,A,D,B,D,D,D,D,C,B,C,D,C,C,B,A,D"],
+
     "2022": ["B,B,A,D,C,B,C,B,A,A,A,C,B,D,D,B,B,D,B,C,B,B,D,A,C,B,A,C,B,B,A,B,D,D,B,A,B,D,C,B,A,A,A,D,D,A,D,A,B,D,D,B,B,B,B,B,B,B,B,D,C,D,D,B,D,D,C,D,C,C,A,B,B,D,B,B,D,D,D,A", "B,B,C,D,C,B,D,A,A,C,C,C,A,A,C,A,A,C,C,B,D,B,A,A,C,C,A,B,D,X,X,C,D,D,C,B,B,D,B,C,B,C,B,A,C,B,B,B,B,A,B,D,C,C,C,C,D,D,A,B,D,A,C,D,A,D,D,D,B,B,A,A,C,C,C,D,C,B,A,B"],
 
     "2021": ["D,D,B,C,X,A,D,A,C,X,B,D,C,A,D,A,C,A,C,B,A,C,D,B,D,A,A,D,C,B,A,C,A,A,A,D,A,D,C,A,C,A,C,B,B,D,B,C,D,B,C,C,B,B,B,D,C,B,B,D,A,C,C,A,C,B,A,D,C,D,C,B,A,C,C,C,D,C,C,B", "D,A,X,C,D,C,C,B,C,B,B,C,C,B,C,A,A,C,C,A,A,B,C,C,B,B,C,A,D,A,C,C,B,D,A,A,D,B,C,C,C,D,C,A,D,D,B,A,C,C,A,B,C,D,C,C,D,A,C,B,B,D,C,D,C,B,C,C,C,D,B,B,C,D,D,D,D,B,C,D"],
