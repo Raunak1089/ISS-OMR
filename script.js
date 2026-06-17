@@ -117,34 +117,50 @@ function completed() {
 
     let correctAnswers = new Array(80).fill('');
 
-    // Dynamically generate the keys table based on anskeys
-    let availableYears = Object.keys(anskeys).sort((a, b) => a - b);
-    let tableHeaders = `<th style="padding: 4px; font-size: 0.5em;"></th>`;
-    let tableRowPI = `<th style="padding: 4px; font-size: 0.8em;">P I</th>`;
-    let tableRowPII = `<th style="padding: 4px; font-size: 0.8em;">P II</th>`;
-
-    availableYears.forEach(year => {
-        tableHeaders += `<th style="padding: 4px; font-size: 0.5em;">${year}</th>`;
-        tableRowPI += `<td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '${year}')"></td>`;
-        tableRowPII += `<td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '${year}')"></td>`;
-    });
-
     let resultsHTML = `
       <script src="https://raunak1089.github.io/all_scripts/fontawesome.js"></script>
 
 <div style="padding: 20px; font-family: Arial, sans-serif;">
   <h2 style="text-align: center; margin-bottom: 20px;">Exam Results</h2>
   
+  <!-- Answer Key Selection Table -->
   <div style="text-align: center; margin-bottom: 20px;">
     <table id="answerKeyTable" style="border-collapse: collapse; margin: 0 auto; display: inline-block;">
       <tr>
-        ${tableHeaders}
+        <th style="padding: 4px; font-size: 0.5em;"></th>
+        <th style="padding: 4px; font-size: 0.5em;">2017</th>
+        <th style="padding: 4px; font-size: 0.5em;">2018</th>
+        <th style="padding: 4px; font-size: 0.5em;">2019</th>
+        <th style="padding: 4px; font-size: 0.5em;">2020</th>
+        <th style="padding: 4px; font-size: 0.5em;">2021</th>
+        <th style="padding: 4px; font-size: 0.5em;">2022</th>
+        <th style="padding: 4px; font-size: 0.5em;">2023</th>
+        <th style="padding: 4px; font-size: 0.5em;">2024</th>
+        <th style="padding: 4px; font-size: 0.5em;">2025</th>
       </tr>
       <tr>
-        ${tableRowPI}
+        <th style="padding: 4px; font-size: 0.8em;">P I</th>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2017')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2018')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2019')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2020')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2021')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2022')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2023')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2024')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2025')"></td>
       </tr>
       <tr>
-        ${tableRowPII}
+        <th style="padding: 4px; font-size: 0.8em;">P II</th>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2017')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2018')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2019')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2020')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2021')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2022')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2023')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2024')"></td>
+        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2025')"></td>
       </tr>
     </table>
   </div>
@@ -217,7 +233,7 @@ function completed() {
         const table = document.getElementById('answerKeyTable');
         const rows = table.rows;
         const rowIndex = paper === 'Paper I' ? 1 : 2; // Row 1 for Paper I, Row 2 for Paper II
-        const colIndex = Object.keys(anskeys).sort((a, b) => a - b).indexOf(year) + 1; // +1 because first column is row header
+        const colIndex = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'].indexOf(year) + 1; // +1 because first column is row header
 
         if (rowIndex >= 1 && colIndex >= 1) {
             rows[rowIndex].cells[colIndex].style.backgroundColor = '#4285F4';
