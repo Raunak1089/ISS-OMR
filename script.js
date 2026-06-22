@@ -228,7 +228,7 @@ function completed() {
         const table = document.getElementById('answerKeyTable');
         const rows = table.rows;
         const rowIndex = paper === 'Paper I' ? 1 : 2; // Row 1 for Paper I, Row 2 for Paper II
-        const colIndex = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'].indexOf(year) + 1; // +1 because first column is row header
+        const colIndex = Object.keys(anskeys).indexOf(year) + 1; // +1 because first column is row header
 
         if (rowIndex >= 1 && colIndex >= 1) {
             rows[rowIndex].cells[colIndex].style.backgroundColor = '#4285F4';
