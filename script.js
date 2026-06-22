@@ -117,6 +117,10 @@ function completed() {
 
     let correctAnswers = new Array(80).fill('');
 
+
+    // List of available answer keys
+    let years = Object.keys(anskeys);
+
     let resultsHTML = `
       <script src="https://raunak1089.github.io/all_scripts/fontawesome.js"></script>
 
@@ -127,40 +131,31 @@ function completed() {
   <div style="text-align: center; margin-bottom: 20px;">
     <table id="answerKeyTable" style="border-collapse: collapse; margin: 0 auto; display: inline-block;">
       <tr>
-        <th style="padding: 4px; font-size: 0.5em;"></th>
-        <th style="padding: 4px; font-size: 0.5em;">2017</th>
-        <th style="padding: 4px; font-size: 0.5em;">2018</th>
-        <th style="padding: 4px; font-size: 0.5em;">2019</th>
-        <th style="padding: 4px; font-size: 0.5em;">2020</th>
-        <th style="padding: 4px; font-size: 0.5em;">2021</th>
-        <th style="padding: 4px; font-size: 0.5em;">2022</th>
-        <th style="padding: 4px; font-size: 0.5em;">2023</th>
-        <th style="padding: 4px; font-size: 0.5em;">2024</th>
-        <th style="padding: 4px; font-size: 0.5em;">2025</th>
+        <th style="padding: 4px; font-size: 0.5em;"></th>`; 
+
+    for (let yr of years) {
+        resultsHTML += `<th style="padding: 4px; font-size: 0.5em;">${yr}</th>`
+    }
+
+        resultsHTML += `
       </tr>
       <tr>
-        <th style="padding: 4px; font-size: 0.8em;">P I</th>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2017')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2018')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2019')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2020')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2021')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2022')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2023')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2024')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '2025')"></td>
+        <th style="padding: 4px; font-size: 0.8em;">P I</th>`; 
+
+    for (let yr of years) {
+        resultsHTML += `<td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper I', '${yr}')"></td>`
+    }
+
+        resultsHTML += `
       </tr>
       <tr>
-        <th style="padding: 4px; font-size: 0.8em;">P II</th>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2017')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2018')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2019')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2020')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2021')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2022')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2023')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2024')"></td>
-        <td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '2025')"></td>
+        <th style="padding: 4px; font-size: 0.8em;">P II</th>`; 
+
+    for (let yr of years) {
+        resultsHTML += `<td style="border: 1px solid #ddd; padding: 2px; width: 1.5em; height: 1.5em; cursor: pointer;" onclick="selectAnswerKey('Paper II', '${yr}')"></td>`
+    }
+
+        resultsHTML += `
       </tr>
     </table>
   </div>
@@ -451,6 +446,8 @@ document.querySelector('#mainContentArea').onclick = () => { document.querySelec
 
 
 let anskeys = {
+    "2026": ["B,C,A,C,C,C,D,B,B,A,C,D,B,C,C,D,B,A,C,B,B,A,B,B,A,D,B,B,B,B,C,D,B,B,C,C,B,A,C,D,A,B,B,D,C,C,A,B,C,A,B,C,A,A,A,C,B,A,A,D,C,D,A,C,A,C,D,B,C,B,C,C,C,B,B,B,B,C,C,A", "A,B,C,C,C,D,A,C,B,A,A,D,D,A,B,C,B,C,B,A,C,D,C,B,C,D,A,C,C,A,B,B,B,A,D,B,B,B,B,A,B,A,B,B,B,C,C,C,C,D,C,C,D,D,D,B,C,A,D,A,D,C,A,C,B,C,B,B,A,C,B,D,A,C,D,B,C,D,A,A"],
+
     "2025": ["A,A,B,D,A,A,B,A,C,C,B,D,B,D,C,D,B,A,A,B,A,D,A,B,C,A,B,B,C,C,D,B,D,C,C,D,B,C,A,D,B,B,D,B,B,C,D,B,B,D,C,A,C,C,B,B,B,D,A,D,D,A,C,B,B,A,A,B,A,C,D,D,D,D,D,C,A,C,D,B", "D,B,A,C,C,A,C,D,A,D,A,C,A,B,A,B,C,A,D,A,A,C,B,C,D,D,D,C,D,B,D,D,B,C,A,C,B,B,B,B,B,C,A,D,C,C,B,C,B,B,A,C,C,C,C,D,B,B,C,C,C,D,A,B,B,B,D,C,C,D,B,D,B,B,D,C,B,A,B,A"],
 
     "2024": ["A,C,A,A,D,C,B,C,A,B,C,B,B,C,B,C,B,A,B,D,D,B,A,B,C,C,B,B,A,B,B,D,B,B,A,D,B,D,C,B,D,D,D,C,A,A,A,B,D,D,D,A,B,A,X,A,D,A,D,C,B,D,C,D,A,B,D,B,D,A,A,B,B,B,B,X,A,B,C,B", "B,A,C,B,C,C,C,C,A,A,A,D,A,C,C,D,A,C,D,B,C,C,D,D,C,D,C,C,A,A,D,D,A,A,C,C,B,B,D,B,C,B,C,D,A,B,A,A,A,B,C,A,C,D,C,C,C,C,A,B,C,D,D,C,D,A,D,D,C,C,B,B,B,A,D,A,A,B,A,A"],
